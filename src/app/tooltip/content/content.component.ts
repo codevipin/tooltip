@@ -34,7 +34,6 @@ export class ContentComponent implements AfterViewInit, OnChanges {
 
   private alignTop(elementPosition) {
     setTimeout(()=> {
-      console.log(elementPosition)
       this.arrowClass = 'down-arrow';
       this.top = elementPosition.top - 35;
       this.left = elementPosition.left + 10;
@@ -56,10 +55,8 @@ export class ContentComponent implements AfterViewInit, OnChanges {
   private updateTooltipPosition() {
     const rect = this.ref.nativeElement.getBoundingClientRect();
     if(!this.atBottom && rect.top < 0) {
-      console.log("aligning bottom")
       this.alignBottom(rect);
     } else if(!this.atTop && rect.top > 80) {
-      console.log("aligning top")
       this.alignTop(rect)
     }
   }

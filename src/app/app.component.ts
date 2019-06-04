@@ -12,15 +12,14 @@ export class AppComponent {
   constructor(private tooltipService:TooltipService) {}
   @HostListener('click', ['$event'])
   onclick(event:any) {
-    console.log("parent clicled")
     if(event.target.id !== 'tooltip-content') {
       this.tooltipService.clearTooltip();
     }
   }
   @HostListener('window:keyup', ['$event'])
   onKeyUp(event: KeyboardEvent): void {
-    console.log(event.keyCode)
     if(event.keyCode === 27) {
+      console.log("ESC key pressed", event.keyCode)
       this.tooltipService.clearTooltip();
     } 
   }
