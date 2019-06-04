@@ -19,6 +19,9 @@ import { TooltipService } from 'src/app/services/tooltip.service';
 export class ContentComponent implements AfterViewInit, OnChanges {
   top:number;
   left:number;
+  arrowClass:string;
+  private atBottom:boolean = false;
+  private atTop:boolean = false;
   constructor(private tooltipService: TooltipService) { }
   @Input() title: string;
   @Input() ref: any;
@@ -29,18 +32,54 @@ export class ContentComponent implements AfterViewInit, OnChanges {
 
   }
 
-  ngOnChanges():void {
-    const elementPosition = this.ref.nativeElement.getBoundingClientRect();
+  private alignTop(elementPosition) {
     setTimeout(()=> {
+      console.log(elementPosition)
+      this.arrowClass = 'down-arrow';
       this.top = elementPosition.top - 35;
       this.left = elementPosition.left + 10;
+      this.atBottom =  false;
+      this.atTop = true;
+    })
+  }
+  private alignBottom(elementPosition) {
+    setTimeout(()=> {
+      const parentRect = this.ref.nativeElement.offsetParent.getBoundingClientRect();
+      this.arrowClass = 'up-arrow';
+      this.top = elementPosition.top - parentRect.top + elementPosition.height + 35
+      this.left = elementPosition.left + 10;
+      this.atBottom = true;
+      this.atTop = false;
     })
   }
 
-  @HostListener('window:resize')
+  private updateTooltipPosition() {
+    const rect = this.ref.nativeElement.getBoundingClientRect();
+    if(!this.atBottom && rect.top < 0) {
+      console.log("aligning bottom")
+      this.alignBottom(rect);
+    } else if(!this.atTop && rect.top > 80) {
+      console.log("aligning top")
+      this.alignTop(rect)
+    }
+  }
+
+  private reset() {
+    this.atBottom = false;
+    this.atTop = false;
+  }
+
+
+  ngOnChanges():void {
+    this.reset();
+    this.updateTooltipPosition();
+  }
+
+  @HostListener('window:scroll')
   onWindowResize(): void {
     // update position based on `ref`
-    console.log("here is the refernce to element on window size change", this.ref)
+    this.updateTooltipPosition();
+  
   }
 
 }

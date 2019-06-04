@@ -26,9 +26,7 @@ export class TooltipDirective implements OnDestroy {
   ){ }
   @HostListener('click', ['$event'])
   onClick(event:any): void {
-    event.preventDefault();
     event.stopPropagation();
-    console.log("insise", event)
     this.id = Math.random();
     const tooltipData = { 
       id: this.id,

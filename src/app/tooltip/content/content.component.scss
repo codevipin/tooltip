@@ -16,4 +16,15 @@
         border-style: solid;
         border-color: black transparent transparent transparent;
     }
+    &.up-arrow::after{
+        top: -70%;
+        border-bottom: 10px solid black;
+        border-top: 10px solid transparent;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+    }
+    &.down-arrow::after{
+        top: 100%; /* At the bottom of the tooltip */
+        
+    }
 }
